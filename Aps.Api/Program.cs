@@ -10,6 +10,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<Context>(opt => opt.UseInMemoryDatabase("aps_db"));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Dev", 
+        builder =>
+            builder
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowAnyOrigin());
+});
+
 
 var app = builder.Build();
 
@@ -44,5 +54,8 @@ app.MapGet("/information", async(Context db) =>
 });
 
 
+app.UseCors("Dev");
+
+app.UseCors();
 
 app.Run();
